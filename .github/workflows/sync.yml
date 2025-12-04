@@ -1,41 +1,32 @@
 name: Sync WeRead to Notion
 
 on:
-schedule:
-- cron: '0 2 * * *'
-workflow_dispatch:
+  schedule:
+    - cron: '0 2 * * *'
+  workflow_dispatch:
 
 jobs:
-sync:
-runs-on: ubuntu-latest
-steps:
-- name: Checkout repo
-uses: actions/checkout@v4
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-```
-  - name: Setup Python
-    uses: actions/setup-python@v4
-    with:
-      python-version: '3.11'
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
 
-  - name: Install dependencies
-    run: |
-      python -m pip install --upgrade pip
-      pip install -r requirements.txt
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-  - name: Set environment variables
-    run: |
-      echo "WEREAD_COOKIE=${{ secrets.WEREAD_COOKIE }}" >> $GITHUB_ENV
-      echo "NOTION_TOKEN=${{ secrets.NOTION_TOKEN }}" >> $GITHUB_ENV
-      echo "NOTION_BOOK_DATABASE_ID=${{ secrets.NOTION_BOOK_DATABASE_ID }}" >> $GITHUB_ENV
-      echo "NOTION_READ_DATABASE_ID=${{ secrets.NOTION_READ_DATABASE_ID }}" >> $GITHUB_ENV
-      echo "NOTION_REVIEW_DATABASE_ID=${{ secrets.NOTION_REVIEW_DATABASE_ID }}" >> $GITHUB_ENV
-      echo "NOTION_BOOKMARK_DATABASE_ID=${{ secrets.NOTION_BOOKMARK_DATABASE_ID }}" >> $GITHUB_ENV
-      echo "NOTION_CHAPTER_DATABASE_ID=${{ secrets.NOTION_CHAPTER_DATABASE_ID }}" >> $GITHUB_ENV
+      - name: Set environment variables
+        run: |
+          echo 'WEREAD_COOKIE=${{ secrets.WEREAD_COOKIE }}' >> $GITHUB_ENV
+          echo 'NOTION_TOKEN=${{ secrets.NOTION_TOKEN }}' >> $GITHUB_ENV
+          echo 'DATABASE_ID=${{ secrets.DATABASE_ID }}' >> $GITHUB_ENV
 
-  - name: Run Book Sync
-    run: python weread2notionpro/book.py
-
-  - name: Run Notes Sync
-    run: python weread2notionpro/weread.py
-```
+      - name: Run sync
+        run: python -m weread2notionpro.main
