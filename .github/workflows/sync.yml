@@ -2,8 +2,8 @@ name: Sync WeRead to Notion
 
 on:
   schedule:
-    - cron: '0 2 * * *'   # 每天 2 点自动运行
-  workflow_dispatch:       # 手动触发
+    - cron: '0 2 * * *'
+  workflow_dispatch:
 
 jobs:
   sync:
@@ -28,6 +28,10 @@ jobs:
           echo 'WEREAD_COOKIE=${{ secrets.WEREAD_COOKIE }}' >> $GITHUB_ENV
           echo 'NOTION_TOKEN=${{ secrets.NOTION_TOKEN }}' >> $GITHUB_ENV
           echo 'DATABASE_ID=${{ secrets.DATABASE_ID }}' >> $GITHUB_ENV
+
+      - name: Fix Python path
+        run: |
+          echo "PYTHONPATH=$(pwd)" >> $GITHUB_ENV
 
       - name: Run sync script
         run: python weread2notionpro/book.py
