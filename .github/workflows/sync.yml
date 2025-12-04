@@ -27,6 +27,7 @@ jobs:
         run: |
           echo 'WEREAD_COOKIE=${{ secrets.WEREAD_COOKIE }}' >> $GITHUB_ENV
           echo 'NOTION_TOKEN=${{ secrets.NOTION_TOKEN }}' >> $GITHUB_ENV
+          echo 'NOTION_PAGE=${{ secrets.NOTION_PAGE }}' >> $GITHUB_ENV
           echo 'DATABASE_ID=${{ secrets.DATABASE_ID }}' >> $GITHUB_ENV
 
       - name: Fix Python path
