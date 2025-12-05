@@ -130,40 +130,41 @@ class NotionHelper:
             if "has_children" in child and child["has_children"]:
                 self.search_database(child["id"])
 
-   def update_book_database(self):
-       """更新数据库"""
-       response = self.client.databases.retrieve(database_id=self.book_database_id)
-       id = response.get("id")
-       # 关键修复：空库时 properties 可能为 None
-       properties = response.get("properties") or {}
-       update_properties = {}
-        if (
-            properties.get("阅读时长") is None
-            or properties.get("阅读时长").get("type") != "number"
-        ):
-        update_properties["阅读时长"] = {"number": {}}
-        if (
-            properties.get("书架分类") is None
-            or properties.get("书架分类").get("type") != "select"
-        ):
-            update_properties["书架分类"] = {"select": {}}
-        if (
-            properties.get("豆瓣链接") is None
-            or properties.get("豆瓣链接").get("type") != "url"
-        ):
-            update_properties["豆瓣链接"] = {"url": {}}
-        if (
-            properties.get("我的评分") is None
-            or properties.get("我的评分").get("type") != "select"
-        ):
-            update_properties["我的评分"] = {"select": {}}
-        if (
-            properties.get("豆瓣短评") is None
-            or properties.get("豆瓣短评").get("type") != "rich_text"
-        ):
-            update_properties["豆瓣短评"] = {"rich_text": {}}
-        if update_properties:
-            self.client.databases.update(database_id=id, properties=update_properties)
+        def update_book_database(self):
+            """更新数据库"""
+            response = self.client.databases.retrieve(database_id=self.book_database_id)
+            id = response.get("id")
+            properties = response.get("properties") or {}   # 关键修复
+            update_properties = {}
+            if (
+                properties.get("阅读时长") is None
+                or properties.get("阅读时长").get("type") != "number"
+            ):
+                update_properties["阅读时长"] = {"number": {}}
+            if (
+                properties.get("书架分类") is None
+                or properties.get("书架分类").get("type") != "select"
+            ):
+                update_properties["书架分类"] = {"select": {}}
+            if (
+                properties.get("豆瓣链接") is None
+                or properties.get("豆瓣链接").get("type") != "url"
+            ):
+                update_properties["豆瓣链接"] = {"url": {}}
+            if (
+                properties.get("我的评分") is None
+                or properties.get("我的评分").get("type") != "select"
+            ):
+                update_properties["我的评分"] = {"select": {}}
+            if (
+                properties.get("豆瓣短评") is None
+                or properties.get("豆瓣短评").get("type") != "rich_text"
+            ):
+                update_properties["豆瓣短评"] = {"rich_text": {}}
+            if update_properties:
+                self.client.databases.update(database_id=id, properties=update_properties)
+
+   
 
     def create_database(self):
         title = [
