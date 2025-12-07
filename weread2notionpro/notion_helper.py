@@ -429,7 +429,7 @@ class NotionHelper:
     @retry(stop_max_attempt_number=3, wait_fixed=5000)
     def query(self, **kwargs):
         kwargs = {k: v for k, v in kwargs.items() if v}
-        eturn self.client.databases.retrieve(**kwargs)
+        return self.client.databases.retrieve(**kwargs)
 
     @retry(stop_max_attempt_number=3, wait_fixed=5000)
     def get_block_children(self, id):
